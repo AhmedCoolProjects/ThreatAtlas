@@ -1,0 +1,22 @@
+import type { Metadata } from "next";
+import "./globals.css";
+
+export const metadata: Metadata = {
+  title: "Threat Atlas | Interactive APT Attack & Detection Lifecycle",
+  description:
+    "Explore the causal provenance stages of Advanced Persistent Threat (APT) campaigns and inspect realistic Sysmon telemetry, MITRE ATT&CK techniques, and Sigma detection rules.",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en" className="dark">
+      <body className="antialiased w-screen h-screen overflow-hidden bg-slate-950 text-slate-100">
+        {children}
+      </body>
+    </html>
+  );
+}
