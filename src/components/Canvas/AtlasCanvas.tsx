@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useCallback } from "react";
+import React, { useEffect, useMemo, useCallback, useState } from "react";
 import {
   ReactFlow,
   Background,
@@ -21,6 +21,7 @@ import {
   Search,
   Shield,
   Crosshair,
+  Map,
 } from "lucide-react";
 
 const nodeTypes = {
@@ -46,6 +47,8 @@ function CanvasInner() {
   const setEntityFilter = useAtlasStore((state) => state.setEntityFilter);
   const theme = useAtlasStore((state) => state.theme);
 
+  const [showMiniMap, setShowMiniMap] = useState(false);
+
   const isLight = theme === "light";
   const isRed = perspective === "red";
 
@@ -66,17 +69,17 @@ function CanvasInner() {
     const stageNodes = campaign.nodes.filter((n) => n.data.stage === activeStage);
     if (stageNodes.length > 0) {
       const minX = Math.min(...stageNodes.map((n) => n.position.x));
-      const maxX = Math.max(...stageNodes.map((n) => n.position.x + 300));
+      const maxX = Math.max(...stageNodes.map((n) => n.position.x + 360));
       const minY = Math.min(...stageNodes.map((n) => n.position.y));
-      const maxY = Math.max(...stageNodes.map((n) => n.position.y + 160));
+      const maxY = Math.max(...stageNodes.map((n) => n.position.y + 200));
 
-      const padding = 140;
+      const padding = 160;
       fitBounds(
         {
           x: minX - padding,
           y: minY - padding,
-          width: Math.max(maxX - minX + padding * 2, 700),
-          height: Math.max(maxY - minY + padding * 2, 500),
+          width: Math.max(maxX - minX + padding * 2, 850),
+          height: Math.max(maxY - minY + padding * 2, 550),
         },
         { duration: 600 }
       );
@@ -128,8 +131,8 @@ function CanvasInner() {
         <div
           className={`flex items-center gap-2.5 pointer-events-auto backdrop-blur-md px-3.5 py-2 rounded-xl border shadow-lg transition-colors ${
             isLight
-              ? "bg-white/95 border-slate-200 text-slate-900"
-              : "bg-slate-900/80 border-slate-800/80 text-slate-100"
+              ? "bg-white/95 border-slate-200 text-slate-900 shadow-sm"
+              : "bg-slate-900/80 border-slate-800/80 text-slate-100 shadow-md"
           }`}
         >
           <div
@@ -157,8 +160,8 @@ function CanvasInner() {
               <span
                 className={`px-1.5 py-0.2 rounded text-[10px] font-mono font-medium ${
                   isLight
-                    ? "bg-slate-200 text-slate-700"
-                    : "bg-slate-800 text-slate-400"
+                    ? "bg-slate-100 text-slate-700 border border-slate-200"
+                    : "bg-slate-800 text-slate-400 border border-slate-700"
                 }`}
               >
                 {activeNodesCount} active node{activeNodesCount === 1 ? "" : "s"}
@@ -214,6 +217,23 @@ function CanvasInner() {
               </option>
             ))}
           </select>
+
+          {/* MiniMap Toggle Button */}
+          <button
+            onClick={() => setShowMiniMap(!showMiniMap)}
+            className={`p-2 rounded-xl border backdrop-blur-md transition-all ${
+              showMiniMap
+                ? isLight
+                  ? "bg-cyan-50 border-cyan-300 text-cyan-700 shadow-sm"
+                  : "bg-cyan-950 border-cyan-800 text-cyan-300"
+                : isLight
+                ? "bg-white/95 border-slate-200 text-slate-500 hover:text-slate-900"
+                : "bg-slate-900/90 border-slate-800 text-slate-400 hover:text-slate-200"
+            }`}
+            title="Toggle MiniMap Overview"
+          >
+            <Map className="w-3.5 h-3.5" />
+          </button>
         </div>
       </div>
 
@@ -241,7 +261,10 @@ function CanvasInner() {
           className={isLight ? "opacity-45" : "opacity-75"}
         />
 
+        {/* Viewport Controls - clean positioning on bottom-left above scrubber */}
         <Controls
+          position="bottom-left"
+          style={{ bottom: "5.5rem", left: "1.25rem" }}
           showInteractive={false}
           className={`!backdrop-blur-md !rounded-xl !shadow-xl ${
             isLight
@@ -250,24 +273,29 @@ function CanvasInner() {
           }`}
         />
 
-        <MiniMap
-          nodeColor={(n) => {
-            const data = (n as AtlasNode).data;
-            if (data?.stage !== activeStage) return isLight ? "#cbd5e1" : "#1e293b";
-            if (data?.entityType === "process") return "#f59e0b";
-            if (data?.entityType === "network") return "#10b981";
-            if (data?.entityType === "file") return "#3b82f6";
-            if (data?.entityType === "user") return "#f43f5e";
-            if (data?.entityType === "registry") return "#a855f7";
-            return "#06b6d4";
-          }}
-          maskColor={isLight ? "rgba(241, 245, 249, 0.7)" : "rgba(5, 8, 17, 0.75)"}
-          className={`!backdrop-blur-md !border !rounded-xl !overflow-hidden !shadow-2xl ${
-            isLight ? "!bg-white/90 !border-slate-200" : "!bg-slate-950/80 !border-slate-800/90"
-          }`}
-          zoomable
-          pannable
-        />
+        {/* MiniMap - optional toggle in top-right */}
+        {showMiniMap && (
+          <MiniMap
+            position="top-right"
+            style={{ top: "1rem", right: "1rem", width: 190, height: 120 }}
+            nodeColor={(n) => {
+              const data = (n as AtlasNode).data;
+              if (data?.stage !== activeStage) return isLight ? "#cbd5e1" : "#1e293b";
+              if (data?.entityType === "process") return "#f59e0b";
+              if (data?.entityType === "network") return "#10b981";
+              if (data?.entityType === "file") return "#3b82f6";
+              if (data?.entityType === "user") return "#f43f5e";
+              if (data?.entityType === "registry") return "#a855f7";
+              return "#06b6d4";
+            }}
+            maskColor={isLight ? "rgba(226, 232, 240, 0.75)" : "rgba(5, 8, 17, 0.85)"}
+            className={`!backdrop-blur-md !border !rounded-xl !overflow-hidden !shadow-2xl ${
+              isLight ? "!bg-slate-50 !border-slate-300" : "!bg-slate-950 !border-slate-800"
+            }`}
+            zoomable
+            pannable
+          />
+        )}
       </ReactFlow>
     </div>
   );

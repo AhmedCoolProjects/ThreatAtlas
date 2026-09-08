@@ -64,13 +64,13 @@ export function InspectorPanel() {
       <aside
         className={`w-full lg:w-[420px] h-full border-l flex flex-col z-20 backdrop-blur-md select-none transition-colors ${
           isLight
-            ? "bg-white/98 border-slate-200 text-slate-900"
+            ? "bg-slate-50 border-slate-200 text-slate-900"
             : "bg-slate-950/95 border-slate-800/90 text-slate-100"
         }`}
       >
         <div
           className={`flex items-center justify-between p-4 border-b ${
-            isLight ? "border-slate-200" : "border-slate-800/80"
+            isLight ? "bg-white border-slate-200" : "border-slate-800/80"
           }`}
         >
           <div className="flex items-center gap-2">
@@ -87,7 +87,7 @@ export function InspectorPanel() {
             onClick={() => setInspectorOpen(false)}
             className={`p-1 rounded-md transition-colors ${
               isLight
-                ? "hover:bg-slate-100 text-slate-500 hover:text-slate-800"
+                ? "hover:bg-slate-200 text-slate-500 hover:text-slate-800"
                 : "hover:bg-slate-800 text-slate-400 hover:text-slate-200"
             }`}
           >
@@ -99,7 +99,7 @@ export function InspectorPanel() {
           <div
             className={`w-12 h-12 rounded-2xl border flex items-center justify-center mb-3 ${
               isLight
-                ? "bg-slate-100 border-slate-200"
+                ? "bg-white border-slate-200 shadow-sm"
                 : "bg-slate-900 border-slate-800"
             }`}
           >
@@ -128,23 +128,27 @@ export function InspectorPanel() {
 
   return (
     <aside
-      className={`w-full lg:w-[450px] h-full border-l flex flex-col z-20 backdrop-blur-md overflow-hidden select-text transition-colors ${
+      className={`w-full lg:w-[460px] h-full border-l flex flex-col z-20 backdrop-blur-md overflow-hidden select-text transition-colors ${
         isLight
-          ? "bg-white/98 border-slate-200 text-slate-900 shadow-xl"
+          ? "bg-slate-50 border-slate-200 text-slate-900 shadow-xl"
           : "bg-slate-950/95 border-slate-800/90 text-slate-100"
       }`}
     >
       {/* Header */}
       <div
         className={`p-4 border-b ${
-          isLight ? "bg-slate-50/80 border-slate-200" : "bg-slate-900/40 border-slate-800/80"
+          isLight
+            ? "bg-white border-slate-200 shadow-sm"
+            : "bg-slate-900/40 border-slate-800/80"
         }`}
       >
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-2.5 min-w-0">
             <div
               className={`p-2 rounded-xl border shrink-0 ${
-                isLight ? "bg-white border-slate-200 shadow-sm" : "bg-slate-900 border-slate-800"
+                isLight
+                  ? "bg-slate-50 border-slate-200 shadow-inner"
+                  : "bg-slate-900 border-slate-800"
               }`}
             >
               {getEntityIcon(data.entityType)}
@@ -154,7 +158,7 @@ export function InspectorPanel() {
                 <span
                   className={`text-[10px] font-mono uppercase font-bold tracking-wider px-1.5 py-0.2 rounded border ${
                     isLight
-                      ? "bg-slate-200 text-slate-700 border-slate-300"
+                      ? "bg-slate-100 text-slate-700 border-slate-200"
                       : "bg-slate-900 text-slate-400 border-slate-800"
                   }`}
                 >
@@ -200,7 +204,7 @@ export function InspectorPanel() {
             onClick={() => setInspectorOpen(false)}
             className={`p-1.5 rounded-lg transition-colors shrink-0 ${
               isLight
-                ? "hover:bg-slate-200 text-slate-500 hover:text-slate-900"
+                ? "hover:bg-slate-100 text-slate-500 hover:text-slate-900"
                 : "hover:bg-slate-800 text-slate-400 hover:text-slate-200"
             }`}
           >
@@ -275,7 +279,7 @@ export function InspectorPanel() {
             <div
               className={`p-3.5 rounded-xl border ${
                 isLight
-                  ? "bg-slate-50 border-slate-200"
+                  ? "bg-white border-slate-200 shadow-sm"
                   : "bg-slate-900/60 border-slate-800/80"
               }`}
             >
@@ -301,7 +305,7 @@ export function InspectorPanel() {
                 <div
                   className={`p-2.5 rounded-lg border ${
                     isLight
-                      ? "bg-slate-50 border-slate-200"
+                      ? "bg-white border-slate-200 shadow-sm"
                       : "bg-slate-900/50 border-slate-800/80"
                   }`}
                 >
@@ -312,7 +316,7 @@ export function InspectorPanel() {
                   >
                     Tool / Malware
                   </span>
-                  <span className="font-bold text-rose-600 dark:text-rose-300 truncate block mt-0.5">
+                  <span className="font-bold text-rose-600 dark:text-rose-300 break-words leading-tight block mt-1">
                     {data.redDetails.toolOrMalware}
                   </span>
                 </div>
@@ -322,7 +326,7 @@ export function InspectorPanel() {
                 <div
                   className={`p-2.5 rounded-lg border ${
                     isLight
-                      ? "bg-slate-50 border-slate-200"
+                      ? "bg-white border-slate-200 shadow-sm"
                       : "bg-slate-900/50 border-slate-800/80"
                   }`}
                 >
@@ -334,7 +338,7 @@ export function InspectorPanel() {
                     Parent Process
                   </span>
                   <span
-                    className={`font-mono truncate block mt-0.5 ${
+                    className={`font-mono break-words leading-tight block mt-1 ${
                       isLight ? "text-slate-800" : "text-slate-200"
                     }`}
                   >
@@ -358,7 +362,7 @@ export function InspectorPanel() {
                   code={data.redDetails.commandLine}
                   language="bash"
                   title="Execution Command / Network Signature"
-                  maxHeight="max-h-44"
+                  maxHeight="max-h-48"
                 />
               </div>
             )}
@@ -378,7 +382,7 @@ export function InspectorPanel() {
                     key={idx}
                     className={`flex items-start gap-2.5 p-2.5 rounded-lg border text-xs ${
                       isLight
-                        ? "bg-slate-50 border-slate-200 text-slate-700"
+                        ? "bg-white border-slate-200 text-slate-700 shadow-sm"
                         : "bg-slate-900/40 border-slate-800/60 text-slate-300"
                     }`}
                   >
@@ -406,7 +410,7 @@ export function InspectorPanel() {
             <div
               className={`p-3.5 rounded-xl border ${
                 isLight
-                  ? "bg-slate-50 border-slate-200"
+                  ? "bg-white border-slate-200 shadow-sm"
                   : "bg-slate-900/60 border-slate-800/80"
               }`}
             >
@@ -453,7 +457,7 @@ export function InspectorPanel() {
                         <span
                           className={`px-1.5 py-0.5 rounded text-[10px] font-mono border ${
                             isLight
-                              ? "bg-slate-200 text-slate-700 border-slate-300"
+                              ? "bg-slate-100 text-slate-700 border-slate-200"
                               : "bg-slate-800 text-slate-300 border-slate-700"
                           }`}
                         >
@@ -585,7 +589,7 @@ export function InspectorPanel() {
             <div
               className={`p-3.5 rounded-xl border ${
                 isLight
-                  ? "bg-slate-50 border-slate-200"
+                  ? "bg-white border-slate-200 shadow-sm"
                   : "bg-slate-900/60 border-slate-800/80"
               }`}
             >

@@ -72,7 +72,7 @@ export const SANDWORM_CAMPAIGN: Campaign = {
     {
       id: "sandworm-node-vpn",
       type: "custom",
-      position: { x: 50, y: 120 },
+      position: { x: 50, y: 140 },
       data: {
         id: "sandworm-node-vpn",
         label: "Compromised VPN Gateway",
@@ -147,7 +147,7 @@ level: high`,
     {
       id: "sandworm-node-jumphost",
       type: "custom",
-      position: { x: 440, y: 120 },
+      position: { x: 560, y: 140 },
       data: {
         id: "sandworm-node-jumphost",
         label: "SCADA Jump Host",
@@ -223,7 +223,7 @@ level: critical`,
     {
       id: "sandworm-node-loader",
       type: "custom",
-      position: { x: 860, y: 120 },
+      position: { x: 1080, y: 140 },
       data: {
         id: "sandworm-node-loader",
         label: "Industroyer2 Binary",
@@ -297,7 +297,7 @@ level: critical`,
     {
       id: "sandworm-node-wiper",
       type: "custom",
-      position: { x: 860, y: 400 },
+      position: { x: 1080, y: 440 },
       data: {
         id: "sandworm-node-wiper",
         label: "CaddyWiper Payload",
@@ -374,7 +374,7 @@ level: critical`,
     {
       id: "sandworm-node-iec104",
       type: "custom",
-      position: { x: 1280, y: 120 },
+      position: { x: 1600, y: 140 },
       data: {
         id: "sandworm-node-iec104",
         label: "IEC 60870-5-104 Attack",
@@ -438,7 +438,7 @@ level: critical`,
     {
       id: "sandworm-node-blackout",
       type: "custom",
-      position: { x: 1700, y: 120 },
+      position: { x: 2120, y: 140 },
       data: {
         id: "sandworm-node-blackout",
         label: "Substation De-energization",

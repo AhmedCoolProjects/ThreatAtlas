@@ -75,7 +75,7 @@ export const SUNBURST_CAMPAIGN: Campaign = {
     {
       id: "node-build-pipeline",
       type: "custom",
-      position: { x: 50, y: 120 },
+      position: { x: 50, y: 140 },
       data: {
         id: "node-build-pipeline",
         label: "SUNSPOT Injector",
@@ -161,7 +161,7 @@ level: high`,
     {
       id: "node-trojan-dll",
       type: "custom",
-      position: { x: 440, y: 120 },
+      position: { x: 560, y: 140 },
       data: {
         id: "node-trojan-dll",
         label: "SolarWinds.Orion.Core.BusinessLayer.dll",
@@ -239,7 +239,7 @@ level: high`,
     {
       id: "node-orion-host",
       type: "custom",
-      position: { x: 860, y: 120 },
+      position: { x: 1080, y: 140 },
       data: {
         id: "node-orion-host",
         label: "SolarWinds.BusinessLayerHost",
@@ -324,7 +324,7 @@ level: critical`,
     {
       id: "node-anti-analysis",
       type: "custom",
-      position: { x: 860, y: 400 },
+      position: { x: 1080, y: 440 },
       data: {
         id: "node-anti-analysis",
         label: "Anti-EDR & Hash Check",
@@ -403,7 +403,7 @@ level: high`,
     {
       id: "node-lsass-dump",
       type: "custom",
-      position: { x: 1280, y: 120 },
+      position: { x: 1600, y: 140 },
       data: {
         id: "node-lsass-dump",
         label: "LSASS Memory Dump",
@@ -480,7 +480,7 @@ level: critical`,
     {
       id: "node-adfs-pivot",
       type: "custom",
-      position: { x: 1280, y: 400 },
+      position: { x: 1600, y: 440 },
       data: {
         id: "node-adfs-pivot",
         label: "Golden SAML Forgery",
@@ -547,7 +547,7 @@ level: critical`,
     {
       id: "node-dga-dns",
       type: "custom",
-      position: { x: 1700, y: 120 },
+      position: { x: 2120, y: 140 },
       data: {
         id: "node-dga-dns",
         label: "DGA DNS Tunnel",
@@ -622,7 +622,7 @@ level: critical`,
     {
       id: "node-c2-beacon",
       type: "custom",
-      position: { x: 1700, y: 400 },
+      position: { x: 2120, y: 440 },
       data: {
         id: "node-c2-beacon",
         label: "TEARDROP / Raindrop C2",

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Check, Copy } from "lucide-react";
+import { Check, Copy, WrapText } from "lucide-react";
 import { useAtlasStore } from "@/store/useAtlasStore";
 
 interface CodeBlockProps {
@@ -18,6 +18,7 @@ export function CodeBlock({
   maxHeight = "max-h-96",
 }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
+  const [wrap, setWrap] = useState(true);
   const theme = useAtlasStore((state) => state.theme);
   const isLight = theme === "light";
 
@@ -130,16 +131,16 @@ export function CodeBlock({
       return (
         <div key={idx} className="table-row">
           <span
-            className={`table-cell pr-4 text-right select-none text-[11px] font-mono w-8 ${
+            className={`table-cell pr-3 text-right select-none text-[11px] font-mono w-7 shrink-0 ${
               isLight ? "text-slate-400" : "text-slate-600"
             }`}
           >
             {idx + 1}
           </span>
           <span
-            className={`table-cell font-mono text-xs whitespace-pre ${
-              isLight ? "text-slate-800" : "text-slate-200"
-            }`}
+            className={`table-cell font-mono text-xs ${
+              wrap ? "whitespace-pre-wrap break-all" : "whitespace-pre"
+            } ${isLight ? "text-slate-800" : "text-slate-200"}`}
           >
             {formattedLine}
           </span>
@@ -150,7 +151,7 @@ export function CodeBlock({
 
   return (
     <div
-      className={`rounded-lg border overflow-hidden my-2 shadow-inner transition-colors ${
+      className={`rounded-xl border overflow-hidden my-2 transition-colors ${
         isLight
           ? "border-slate-300 bg-slate-50 shadow-sm"
           : "border-slate-800 bg-slate-950 shadow-inner"
@@ -172,7 +173,7 @@ export function CodeBlock({
           </div>
           {title && (
             <span
-              className={`text-[11px] font-mono font-medium ${
+              className={`text-[11px] font-mono font-medium truncate max-w-xs ${
                 isLight ? "text-slate-700" : "text-slate-400"
               }`}
             >
@@ -181,7 +182,24 @@ export function CodeBlock({
           )}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
+          <button
+            onClick={() => setWrap(!wrap)}
+            className={`px-1.5 py-0.5 rounded text-[10px] font-mono border transition-colors flex items-center gap-1 ${
+              wrap
+                ? isLight
+                  ? "bg-slate-300 text-slate-800 border-slate-400 font-semibold"
+                  : "bg-slate-800 text-slate-200 border-slate-700 font-semibold"
+                : isLight
+                ? "bg-white text-slate-500 border-slate-300"
+                : "bg-slate-950 text-slate-500 border-slate-800"
+            }`}
+            title={wrap ? "Disable Word Wrap" : "Enable Word Wrap"}
+          >
+            <WrapText className="w-3 h-3" />
+            <span>Wrap</span>
+          </button>
+
           <span
             className={`text-[10px] font-mono uppercase px-1.5 py-0.5 rounded border ${
               isLight
@@ -191,6 +209,7 @@ export function CodeBlock({
           >
             {language}
           </span>
+
           <button
             onClick={handleCopy}
             className={`flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-mono border transition-colors ${

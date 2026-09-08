@@ -72,7 +72,7 @@ export const COZYBEAR_CAMPAIGN: Campaign = {
     {
       id: "cb-node-spray",
       type: "custom",
-      position: { x: 50, y: 120 },
+      position: { x: 50, y: 140 },
       data: {
         id: "cb-node-spray",
         label: "Password Spraying",
@@ -141,7 +141,7 @@ level: high`,
     {
       id: "cb-node-app-consent",
       type: "custom",
-      position: { x: 440, y: 120 },
+      position: { x: 560, y: 140 },
       data: {
         id: "cb-node-app-consent",
         label: "OAuth App Registration",
@@ -218,7 +218,7 @@ level: critical`,
     {
       id: "cb-node-graph-priv",
       type: "custom",
-      position: { x: 860, y: 120 },
+      position: { x: 1080, y: 140 },
       data: {
         id: "cb-node-graph-priv",
         label: "Graph Role Assignment",
@@ -283,7 +283,7 @@ level: critical`,
     {
       id: "cb-node-ews-harvest",
       type: "custom",
-      position: { x: 1280, y: 120 },
+      position: { x: 1600, y: 140 },
       data: {
         id: "cb-node-ews-harvest",
         label: "Graph API Mailbox Query",
@@ -355,7 +355,7 @@ level: high`,
     {
       id: "cb-node-exfil",
       type: "custom",
-      position: { x: 1700, y: 120 },
+      position: { x: 2120, y: 140 },
       data: {
         id: "cb-node-exfil",
         label: "Residential Proxy Exfil",

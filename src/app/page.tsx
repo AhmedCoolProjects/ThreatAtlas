@@ -27,6 +27,15 @@ export default function ThreatAtlasPage() {
   const setIsPlayingTimeline = useAtlasStore(
     (state) => state.setIsPlayingTimeline
   );
+  const theme = useAtlasStore((state) => state.theme);
+
+  // Sync theme to root html element class
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      document.documentElement.classList.remove("light", "dark");
+      document.documentElement.classList.add(theme);
+    }
+  }, [theme]);
 
   // Global Keyboard shortcuts
   useEffect(() => {
@@ -99,8 +108,14 @@ export default function ThreatAtlasPage() {
     setIsPlayingTimeline,
   ]);
 
+  const isLight = theme === "light";
+
   return (
-    <main className="flex flex-col w-screen h-screen overflow-hidden bg-slate-950 font-sans">
+    <main
+      className={`flex flex-col w-screen h-screen overflow-hidden font-sans transition-colors duration-200 ${
+        isLight ? "bg-slate-100 text-slate-900" : "bg-slate-950 text-slate-100"
+      }`}
+    >
       {/* Top Navigation Header */}
       <Header />
 
