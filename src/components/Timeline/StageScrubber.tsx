@@ -23,9 +23,7 @@ export function StageScrubber() {
   const setIsPlayingTimeline = useAtlasStore(
     (state) => state.setIsPlayingTimeline
   );
-  const theme = useAtlasStore((state) => state.theme);
 
-  const isLight = theme === "light";
   const isRed = perspective === "red";
   const stages = campaign.stages;
   const currentStageIndex = stages.findIndex((s) => s.id === activeStage);
@@ -45,30 +43,14 @@ export function StageScrubber() {
 
   return (
     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 w-[95%] max-w-4xl select-none">
-      <div
-        className={`backdrop-blur-lg border rounded-2xl p-3 shadow-2xl flex flex-col gap-2.5 transition-colors ${
-          isLight
-            ? "bg-white/95 border-slate-200 text-slate-900"
-            : "bg-slate-950/95 border-slate-800/90 text-slate-100"
-        }`}
-      >
+      <div className="bg-card/95 backdrop-blur-lg border border-border text-card-foreground rounded-2xl p-3 shadow-xl flex flex-col gap-2.5 transition-colors">
         {/* Navigation bar & stage items */}
         <div className="flex items-center justify-between gap-2">
           {/* Controls: Prev, Play/Pause, Next */}
-          <div
-            className={`flex items-center gap-1 p-1 rounded-xl border shrink-0 ${
-              isLight
-                ? "bg-slate-100 border-slate-200"
-                : "bg-slate-900/80 border-slate-800"
-            }`}
-          >
+          <div className="flex items-center gap-1 p-1 rounded-xl border border-border bg-secondary/80 shrink-0">
             <button
               onClick={prevStage}
-              className={`p-1.5 rounded-lg transition-colors ${
-                isLight
-                  ? "hover:bg-slate-200 text-slate-600 hover:text-slate-900"
-                  : "hover:bg-slate-800 text-slate-400 hover:text-slate-200"
-              }`}
+              className="p-1.5 rounded-lg hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors"
               title="Previous Stage (Left Arrow)"
             >
               <ChevronLeft className="w-4 h-4" />
@@ -79,15 +61,9 @@ export function StageScrubber() {
               className={`p-1.5 rounded-lg transition-all ${
                 isPlayingTimeline
                   ? isRed
-                    ? isLight
-                      ? "bg-rose-100 text-rose-700 border border-rose-200"
-                      : "bg-rose-950 text-rose-300 border border-rose-800"
-                    : isLight
-                    ? "bg-cyan-100 text-cyan-700 border border-cyan-200"
-                    : "bg-cyan-950 text-cyan-300 border border-cyan-800"
-                  : isLight
-                  ? "hover:bg-slate-200 text-slate-700"
-                  : "hover:bg-slate-800 text-slate-300"
+                    ? "bg-rose-500/15 text-rose-700 dark:text-rose-300 border border-rose-300 dark:border-rose-800"
+                    : "bg-cyan-500/15 text-cyan-700 dark:text-cyan-300 border border-cyan-300 dark:border-cyan-800"
+                  : "hover:bg-secondary text-foreground"
               }`}
               title={
                 isPlayingTimeline
@@ -104,11 +80,7 @@ export function StageScrubber() {
 
             <button
               onClick={nextStage}
-              className={`p-1.5 rounded-lg transition-colors ${
-                isLight
-                  ? "hover:bg-slate-200 text-slate-600 hover:text-slate-900"
-                  : "hover:bg-slate-800 text-slate-400 hover:text-slate-200"
-              }`}
+              className="p-1.5 rounded-lg hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors"
               title="Next Stage (Right Arrow)"
             >
               <ChevronRight className="w-4 h-4" />
@@ -128,19 +100,11 @@ export function StageScrubber() {
                   className={`group relative flex items-center gap-2 px-2.5 py-1.5 rounded-xl text-left transition-all border ${
                     isActive
                       ? isRed
-                        ? isLight
-                          ? "bg-rose-50 border-rose-300 shadow-sm"
-                          : "bg-rose-950/70 border-rose-600/80 shadow-[0_0_15px_rgba(239,68,68,0.3)]"
-                        : isLight
-                        ? "bg-cyan-50 border-cyan-300 shadow-sm"
-                        : "bg-cyan-950/70 border-cyan-500/80 shadow-[0_0_15px_rgba(6,182,212,0.3)]"
+                        ? "bg-rose-500/15 border-rose-300 dark:border-rose-600/80 shadow-sm"
+                        : "bg-cyan-500/15 border-cyan-300 dark:border-cyan-500/80 shadow-sm"
                       : isPast
-                      ? isLight
-                        ? "bg-slate-100/70 border-slate-200 hover:border-slate-300 text-slate-700"
-                        : "bg-slate-900/60 border-slate-800/80 hover:border-slate-700 text-slate-400"
-                      : isLight
-                      ? "bg-slate-50 border-slate-200/60 hover:border-slate-300 text-slate-500"
-                      : "bg-slate-900/40 border-slate-800/50 hover:border-slate-700/80 text-slate-500"
+                      ? "bg-secondary/60 border-border hover:border-muted-foreground/30 text-muted-foreground"
+                      : "bg-secondary/30 border-border/50 hover:border-muted-foreground/30 text-muted-foreground/70"
                   }`}
                 >
                   {/* Step Number Bubble */}
@@ -149,16 +113,10 @@ export function StageScrubber() {
                       isActive
                         ? isRed
                           ? "bg-rose-500 text-white"
-                          : isLight
-                          ? "bg-cyan-600 text-white"
-                          : "bg-cyan-400 text-slate-950"
+                          : "bg-cyan-500 text-white"
                         : isPast
-                        ? isLight
-                          ? "bg-slate-300 text-slate-800"
-                          : "bg-slate-800 text-slate-300"
-                        : isLight
-                        ? "bg-slate-200 text-slate-500"
-                        : "bg-slate-800/60 text-slate-500"
+                        ? "bg-muted text-foreground"
+                        : "bg-muted/60 text-muted-foreground"
                     }`}
                   >
                     {idx + 1}
@@ -169,19 +127,11 @@ export function StageScrubber() {
                       className={`text-xs font-semibold truncate transition-colors ${
                         isActive
                           ? isRed
-                            ? isLight
-                              ? "text-rose-800"
-                              : "text-rose-200"
-                            : isLight
-                            ? "text-cyan-800"
-                            : "text-cyan-200"
+                            ? "text-rose-700 dark:text-rose-200"
+                            : "text-cyan-700 dark:text-cyan-200"
                           : isPast
-                          ? isLight
-                            ? "text-slate-800 group-hover:text-slate-900"
-                            : "text-slate-300 group-hover:text-white"
-                          : isLight
-                          ? "text-slate-600 group-hover:text-slate-800"
-                          : "text-slate-400 group-hover:text-slate-300"
+                          ? "text-foreground"
+                          : "text-muted-foreground group-hover:text-foreground"
                       }`}
                     >
                       {stage.shortTitle}
@@ -195,11 +145,7 @@ export function StageScrubber() {
           {/* Reset button */}
           <button
             onClick={() => setStage("initial_access")}
-            className={`p-2 rounded-xl border transition-colors shrink-0 ${
-              isLight
-                ? "bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-600 hover:text-slate-900"
-                : "bg-slate-900/80 hover:bg-slate-800 border-slate-800 text-slate-400 hover:text-slate-200"
-            }`}
+            className="p-2 rounded-xl border border-border bg-secondary/80 hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors shrink-0"
             title="Reset to Stage 1"
           >
             <RotateCcw className="w-4 h-4" />
@@ -207,48 +153,22 @@ export function StageScrubber() {
         </div>
 
         {/* Dynamic Stage Objectives Summary Sub-bar */}
-        <div
-          className={`px-2 pt-1 border-t flex items-center justify-between text-[11px] ${
-            isLight
-              ? "border-slate-200 text-slate-600"
-              : "border-slate-900/80 text-slate-400"
-          }`}
-        >
+        <div className="px-2 pt-1 border-t border-border flex items-center justify-between text-[11px] text-muted-foreground">
           <div className="flex items-center gap-1.5 truncate">
             {isRed ? (
-              <Flame
-                className={`w-3.5 h-3.5 shrink-0 ${
-                  isLight ? "text-rose-600" : "text-rose-500"
-                }`}
-              />
+              <Flame className="w-3.5 h-3.5 shrink-0 text-rose-500" />
             ) : (
-              <Shield
-                className={`w-3.5 h-3.5 shrink-0 ${
-                  isLight ? "text-cyan-600" : "text-cyan-400"
-                }`}
-              />
+              <Shield className="w-3.5 h-3.5 shrink-0 text-cyan-500" />
             )}
-            <span
-              className={`font-semibold ${
-                isLight ? "text-slate-800" : "text-slate-300"
-              }`}
-            >
+            <span className="font-semibold text-foreground">
               Phase Objective:
             </span>
-            <span
-              className={`truncate ${
-                isLight ? "text-slate-700" : "text-slate-400"
-              }`}
-            >
+            <span className="truncate text-foreground/80">
               {stages[currentStageIndex]?.keyObjectives[0]}
             </span>
           </div>
 
-          <span
-            className={`text-[10px] font-mono shrink-0 ml-2 hidden sm:inline ${
-              isLight ? "text-slate-500" : "text-slate-500"
-            }`}
-          >
+          <span className="text-[10px] font-mono shrink-0 ml-2 hidden sm:inline text-muted-foreground">
             Use &larr; &rarr; to scrub &bull; Space to play
           </span>
         </div>

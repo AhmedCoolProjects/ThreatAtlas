@@ -17,6 +17,7 @@ import { CustomNode } from "./CustomNode";
 import { CustomEdge } from "./CustomEdge";
 import { useAtlasStore } from "@/store/useAtlasStore";
 import { AtlasNode, AtlasEdge, EntityType } from "@/types/campaign";
+import { useTheme } from "next-themes";
 import {
   Search,
   Shield,
@@ -45,11 +46,11 @@ function CanvasInner() {
   const setSearchQuery = useAtlasStore((state) => state.setSearchQuery);
   const entityFilter = useAtlasStore((state) => state.entityFilter);
   const setEntityFilter = useAtlasStore((state) => state.setEntityFilter);
-  const theme = useAtlasStore((state) => state.theme);
+  const { resolvedTheme } = useTheme();
 
   const [showMiniMap, setShowMiniMap] = useState(false);
 
-  const isLight = theme === "light";
+  const isLight = resolvedTheme === "light";
   const isRed = perspective === "red";
 
   // Sync selected state into nodes
@@ -121,57 +122,29 @@ function CanvasInner() {
   ];
 
   return (
-    <div
-      className={`relative w-full h-full overflow-hidden transition-colors ${
-        isLight ? "bg-slate-100" : "bg-slate-950"
-      }`}
-    >
+    <div className="relative w-full h-full overflow-hidden bg-background text-foreground transition-colors">
       {/* HUD Bar - Top Left */}
       <div className="absolute top-4 left-4 z-10 flex flex-col gap-2 max-w-md pointer-events-none">
-        <div
-          className={`flex items-center gap-2.5 pointer-events-auto backdrop-blur-md px-3.5 py-2 rounded-xl border shadow-lg transition-colors ${
-            isLight
-              ? "bg-white/95 border-slate-200 text-slate-900 shadow-sm"
-              : "bg-slate-900/80 border-slate-800/80 text-slate-100 shadow-md"
-          }`}
-        >
+        <div className="flex items-center gap-2.5 pointer-events-auto backdrop-blur-md px-3.5 py-2 rounded-xl border border-border bg-card/95 text-card-foreground shadow-sm">
           <div
             className={`p-1.5 rounded-lg ${
               isRed
-                ? isLight
-                  ? "bg-rose-100 text-rose-600"
-                  : "bg-rose-950/80 text-rose-400"
-                : isLight
-                ? "bg-cyan-100 text-cyan-600"
-                : "bg-cyan-950/80 text-cyan-400"
+                ? "bg-rose-500/15 text-rose-600 dark:text-rose-400"
+                : "bg-cyan-500/15 text-cyan-600 dark:text-cyan-400"
             }`}
           >
             {isRed ? <Crosshair className="w-4 h-4" /> : <Shield className="w-4 h-4" />}
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span
-                className={`text-xs font-bold ${
-                  isLight ? "text-slate-900" : "text-slate-200"
-                }`}
-              >
+              <span className="text-xs font-bold text-foreground">
                 {currentStageDef?.shortTitle || "Stage Overview"}
               </span>
-              <span
-                className={`px-1.5 py-0.2 rounded text-[10px] font-mono font-medium ${
-                  isLight
-                    ? "bg-slate-100 text-slate-700 border border-slate-200"
-                    : "bg-slate-800 text-slate-400 border border-slate-700"
-                }`}
-              >
+              <span className="px-1.5 py-0.2 rounded text-[10px] font-mono font-medium bg-muted text-muted-foreground border border-border">
                 {activeNodesCount} active node{activeNodesCount === 1 ? "" : "s"}
               </span>
             </div>
-            <p
-              className={`text-[11px] truncate max-w-xs mt-0.5 ${
-                isLight ? "text-slate-600" : "text-slate-400"
-              }`}
-            >
+            <p className="text-[11px] truncate max-w-xs mt-0.5 text-muted-foreground">
               {currentStageDef?.title}
             </p>
           </div>
@@ -180,38 +153,26 @@ function CanvasInner() {
         {/* Quick Filter & Search Bar */}
         <div className="flex items-center gap-2 pointer-events-auto">
           <div className="relative flex-1">
-            <Search
-              className={`absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 ${
-                isLight ? "text-slate-400" : "text-slate-500"
-              }`}
-            />
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
             <input
               type="text"
               placeholder="Search MITRE, process, or artifact..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className={`w-full pl-8 pr-3 py-1.5 backdrop-blur-md border rounded-xl text-xs transition-colors focus:outline-none ${
-                isLight
-                  ? "bg-white/95 border-slate-200 text-slate-900 placeholder-slate-400 focus:border-cyan-600 shadow-sm"
-                  : "bg-slate-900/90 border-slate-800 text-slate-200 placeholder-slate-500 focus:border-cyan-500"
-              }`}
+              className="w-full pl-8 pr-3 py-1.5 backdrop-blur-md border border-border bg-card/95 text-card-foreground placeholder-muted-foreground rounded-xl text-xs transition-colors focus:outline-none focus:ring-1 focus:ring-primary shadow-sm"
             />
           </div>
 
           <select
             value={entityFilter}
             onChange={(e) => setEntityFilter(e.target.value as EntityType | "all")}
-            className={`px-2.5 py-1.5 backdrop-blur-md border rounded-xl text-xs transition-colors cursor-pointer focus:outline-none ${
-              isLight
-                ? "bg-white/95 border-slate-200 text-slate-800 focus:border-cyan-600 shadow-sm"
-                : "bg-slate-900/90 border-slate-800 text-slate-300 focus:border-cyan-500"
-            }`}
+            className="px-2.5 py-1.5 backdrop-blur-md border border-border bg-card/95 text-card-foreground rounded-xl text-xs transition-colors cursor-pointer focus:outline-none focus:ring-1 focus:ring-primary shadow-sm"
           >
             {filterOptions.map((opt) => (
               <option
                 key={opt.value}
                 value={opt.value}
-                className={isLight ? "bg-white text-slate-900" : "bg-slate-900 text-slate-200"}
+                className="bg-card text-card-foreground"
               >
                 {opt.label}
               </option>
@@ -221,14 +182,10 @@ function CanvasInner() {
           {/* MiniMap Toggle Button */}
           <button
             onClick={() => setShowMiniMap(!showMiniMap)}
-            className={`p-2 rounded-xl border backdrop-blur-md transition-all ${
+            className={`p-2 rounded-xl border border-border backdrop-blur-md transition-all ${
               showMiniMap
-                ? isLight
-                  ? "bg-cyan-50 border-cyan-300 text-cyan-700 shadow-sm"
-                  : "bg-cyan-950 border-cyan-800 text-cyan-300"
-                : isLight
-                ? "bg-white/95 border-slate-200 text-slate-500 hover:text-slate-900"
-                : "bg-slate-900/90 border-slate-800 text-slate-400 hover:text-slate-200"
+                ? "bg-primary/15 border-primary/40 text-primary shadow-sm"
+                : "bg-card/95 text-muted-foreground hover:text-foreground shadow-sm"
             }`}
             title="Toggle MiniMap Overview"
           >
@@ -266,11 +223,7 @@ function CanvasInner() {
           position="bottom-left"
           style={{ bottom: "5.5rem", left: "1.25rem" }}
           showInteractive={false}
-          className={`!backdrop-blur-md !rounded-xl !shadow-xl ${
-            isLight
-              ? "!bg-white/95 !border-slate-200 [&>button]:!bg-transparent [&>button]:!border-slate-200 [&>button]:!text-slate-700 hover:[&>button]:!bg-slate-100"
-              : "!bg-slate-900/90 !border-slate-800 [&>button]:!bg-transparent [&>button]:!border-slate-800 [&>button]:!text-slate-300 hover:[&>button]:!bg-slate-800"
-          }`}
+          className="!backdrop-blur-md !rounded-xl !shadow-sm !bg-card/95 !border-border [&>button]:!bg-transparent [&>button]:!border-border [&>button]:!text-card-foreground hover:[&>button]:!bg-muted"
         />
 
         {/* MiniMap - optional toggle in top-right */}
@@ -289,9 +242,7 @@ function CanvasInner() {
               return "#06b6d4";
             }}
             maskColor={isLight ? "rgba(226, 232, 240, 0.75)" : "rgba(5, 8, 17, 0.85)"}
-            className={`!backdrop-blur-md !border !rounded-xl !overflow-hidden !shadow-2xl ${
-              isLight ? "!bg-slate-50 !border-slate-300" : "!bg-slate-950 !border-slate-800"
-            }`}
+            className="!backdrop-blur-md !border !border-border !rounded-xl !overflow-hidden !shadow-lg !bg-card"
             zoomable
             pannable
           />

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Check, Copy, WrapText } from "lucide-react";
-import { useAtlasStore } from "@/store/useAtlasStore";
+import { useTheme } from "next-themes";
 
 interface CodeBlockProps {
   code: string;
@@ -19,8 +19,8 @@ export function CodeBlock({
 }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
   const [wrap, setWrap] = useState(true);
-  const theme = useAtlasStore((state) => state.theme);
-  const isLight = theme === "light";
+  const { resolvedTheme } = useTheme();
+  const isLight = resolvedTheme === "light";
 
   const handleCopy = async () => {
     try {
@@ -41,7 +41,7 @@ export function CodeBlock({
       if (language === "yaml" || language === "sigma") {
         if (line.trim().startsWith("#")) {
           formattedLine = (
-            <span className={isLight ? "text-slate-400 italic" : "text-slate-500 italic"}>
+            <span className="text-muted-foreground italic">
               {line}
             </span>
           );
@@ -51,14 +51,10 @@ export function CodeBlock({
           const val = line.slice(colonIdx + 1);
           formattedLine = (
             <span>
-              <span
-                className={`font-semibold ${
-                  isLight ? "text-cyan-700" : "text-cyan-400"
-                }`}
-              >
+              <span className="font-semibold text-cyan-600 dark:text-cyan-400">
                 {key}:
               </span>
-              <span className={isLight ? "text-emerald-700 font-medium" : "text-emerald-300"}>
+              <span className="text-emerald-700 dark:text-emerald-300 font-medium">
                 {val}
               </span>
             </span>
@@ -74,10 +70,7 @@ export function CodeBlock({
           while ((match = tagRegex.exec(line)) !== null) {
             if (match.index > lastIndex) {
               parts.push(
-                <span
-                  key={lastIndex}
-                  className={isLight ? "text-slate-800" : "text-slate-200"}
-                >
+                <span key={lastIndex} className="text-foreground">
                   {line.substring(lastIndex, match.index)}
                 </span>
               );
@@ -85,11 +78,11 @@ export function CodeBlock({
             parts.push(
               <span
                 key={match.index}
-                className={isLight ? "text-amber-700 font-semibold" : "text-amber-400 font-semibold"}
+                className="text-amber-600 dark:text-amber-400 font-semibold"
               >
                 {match[1]}
                 {match[2] && (
-                  <span className={isLight ? "text-cyan-700" : "text-cyan-300"}>
+                  <span className="text-cyan-600 dark:text-cyan-300">
                     {match[2]}
                   </span>
                 )}
@@ -100,10 +93,7 @@ export function CodeBlock({
           }
           if (lastIndex < line.length) {
             parts.push(
-              <span
-                key={lastIndex}
-                className={isLight ? "text-slate-800" : "text-slate-200"}
-              >
+              <span key={lastIndex} className="text-foreground">
                 {line.substring(lastIndex)}
               </span>
             );
@@ -117,10 +107,10 @@ export function CodeBlock({
           const val = line.slice(colonIdx + 1);
           formattedLine = (
             <span>
-              <span className={isLight ? "text-purple-700 font-semibold" : "text-purple-400 font-semibold"}>
+              <span className="text-purple-600 dark:text-purple-400 font-semibold">
                 {key}:
               </span>
-              <span className={isLight ? "text-emerald-700 font-medium" : "text-emerald-300"}>
+              <span className="text-emerald-700 dark:text-emerald-300 font-medium">
                 {val}
               </span>
             </span>
@@ -130,17 +120,13 @@ export function CodeBlock({
 
       return (
         <div key={idx} className="table-row">
-          <span
-            className={`table-cell pr-3 text-right select-none text-[11px] font-mono w-7 shrink-0 ${
-              isLight ? "text-slate-400" : "text-slate-600"
-            }`}
-          >
+          <span className="table-cell pr-3 text-right select-none text-[11px] font-mono w-7 shrink-0 text-muted-foreground/60">
             {idx + 1}
           </span>
           <span
             className={`table-cell font-mono text-xs ${
               wrap ? "whitespace-pre-wrap break-all" : "whitespace-pre"
-            } ${isLight ? "text-slate-800" : "text-slate-200"}`}
+            } text-foreground`}
           >
             {formattedLine}
           </span>
@@ -150,21 +136,9 @@ export function CodeBlock({
   };
 
   return (
-    <div
-      className={`rounded-xl border overflow-hidden my-2 transition-colors ${
-        isLight
-          ? "border-slate-300 bg-slate-50 shadow-sm"
-          : "border-slate-800 bg-slate-950 shadow-inner"
-      }`}
-    >
+    <div className="rounded-xl border border-border bg-card overflow-hidden my-2 shadow-sm transition-colors">
       {/* Header bar */}
-      <div
-        className={`flex items-center justify-between px-3 py-1.5 border-b ${
-          isLight
-            ? "bg-slate-200/80 border-slate-300"
-            : "bg-slate-900/90 border-slate-800/80"
-        }`}
-      >
+      <div className="flex items-center justify-between px-3 py-1.5 border-b border-border bg-muted/40">
         <div className="flex items-center gap-2">
           <div className="flex gap-1.5">
             <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
@@ -172,11 +146,7 @@ export function CodeBlock({
             <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
           </div>
           {title && (
-            <span
-              className={`text-[11px] font-mono font-medium truncate max-w-xs ${
-                isLight ? "text-slate-700" : "text-slate-400"
-              }`}
-            >
+            <span className="text-[11px] font-mono font-medium truncate max-w-xs text-foreground/80">
               {title}
             </span>
           )}
@@ -187,12 +157,8 @@ export function CodeBlock({
             onClick={() => setWrap(!wrap)}
             className={`px-1.5 py-0.5 rounded text-[10px] font-mono border transition-colors flex items-center gap-1 ${
               wrap
-                ? isLight
-                  ? "bg-slate-300 text-slate-800 border-slate-400 font-semibold"
-                  : "bg-slate-800 text-slate-200 border-slate-700 font-semibold"
-                : isLight
-                ? "bg-white text-slate-500 border-slate-300"
-                : "bg-slate-950 text-slate-500 border-slate-800"
+                ? "bg-secondary text-secondary-foreground border-border font-semibold"
+                : "bg-transparent text-muted-foreground border-transparent"
             }`}
             title={wrap ? "Disable Word Wrap" : "Enable Word Wrap"}
           >
@@ -200,23 +166,13 @@ export function CodeBlock({
             <span>Wrap</span>
           </button>
 
-          <span
-            className={`text-[10px] font-mono uppercase px-1.5 py-0.5 rounded border ${
-              isLight
-                ? "text-slate-600 bg-white border-slate-300"
-                : "text-slate-500 bg-slate-950 border-slate-800"
-            }`}
-          >
+          <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded border border-border bg-muted text-muted-foreground">
             {language}
           </span>
 
           <button
             onClick={handleCopy}
-            className={`flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-mono border transition-colors ${
-              isLight
-                ? "bg-white hover:bg-slate-100 text-slate-700 border-slate-300 shadow-sm"
-                : "bg-slate-800 hover:bg-slate-700 text-slate-300 border-slate-700"
-            }`}
+            className="flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-mono border border-border bg-card hover:bg-secondary text-card-foreground shadow-sm transition-colors"
             title="Copy to clipboard"
           >
             {copied ? (
@@ -226,7 +182,7 @@ export function CodeBlock({
               </>
             ) : (
               <>
-                <Copy className="w-3 h-3 text-slate-400" />
+                <Copy className="w-3 h-3 text-muted-foreground" />
                 <span>Copy</span>
               </>
             )}
@@ -235,7 +191,7 @@ export function CodeBlock({
       </div>
 
       {/* Code viewport */}
-      <div className={`p-3 overflow-x-auto overflow-y-auto ${maxHeight} text-xs scrollbar-thin`}>
+      <div className={`p-3 overflow-x-auto overflow-y-auto ${maxHeight} text-xs scrollbar-thin bg-card/60`}>
         <div className="table w-full">{formatTokens(code)}</div>
       </div>
     </div>

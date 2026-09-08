@@ -6,12 +6,10 @@ import { CAMPAIGNS } from "@/data/campaigns";
 import {
   X,
   FolderKanban,
-  ShieldAlert,
   Calendar,
   Crosshair,
   Layers,
   ArrowRight,
-  Flame,
   Check,
   Building,
 } from "lucide-react";
@@ -29,22 +27,22 @@ export function CampaignLibraryModal() {
   if (!isCampaignDrawerOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md select-none animate-in fade-in-50 duration-200">
-      <div className="relative w-full max-w-4xl max-h-[90vh] bg-slate-950 border border-slate-800 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-md select-none animate-in fade-in-50 duration-200">
+      <div className="relative w-full max-w-4xl max-h-[90vh] bg-card text-card-foreground border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-slate-800/80 bg-slate-900/40">
+        <div className="flex items-center justify-between p-5 border-b border-border bg-muted/40">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-cyan-400">
+            <div className="p-2.5 rounded-xl border border-border bg-secondary text-primary">
               <FolderKanban className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-white flex items-center gap-2">
+              <h2 className="text-base font-bold text-foreground flex items-center gap-2">
                 APT Campaign Library
-                <span className="text-xs font-mono font-normal text-slate-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">
+                <span className="text-xs font-mono font-normal text-muted-foreground bg-muted px-2 py-0.5 rounded border border-border">
                   {CAMPAIGNS.length} In-Depth Datasets
                 </span>
               </h2>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-muted-foreground">
                 Select an Advanced Persistent Threat (APT) lifecycle to inspect provenance causal nodes, Sysmon telemetry, and Sigma rules.
               </p>
             </div>
@@ -52,7 +50,7 @@ export function CampaignLibraryModal() {
 
           <button
             onClick={() => setCampaignDrawerOpen(false)}
-            className="p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
+            className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -72,42 +70,42 @@ export function CampaignLibraryModal() {
                 }}
                 className={`group relative p-5 rounded-xl border transition-all cursor-pointer ${
                   isSelected
-                    ? "bg-slate-900/80 border-cyan-500 shadow-[0_0_20px_rgba(6,182,212,0.15)] ring-1 ring-cyan-500/50"
-                    : "bg-slate-900/40 border-slate-800/80 hover:border-slate-700 hover:bg-slate-900/60"
+                    ? "bg-primary/10 border-primary shadow-md ring-1 ring-primary/40"
+                    : "bg-card border-border hover:border-primary/50 hover:bg-secondary/50 shadow-sm"
                 }`}
               >
                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                   <div className="space-y-2 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-rose-950/70 border border-rose-800/60 text-rose-300">
+                      <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-rose-500/15 border border-rose-300 dark:border-rose-800 text-rose-700 dark:text-rose-300">
                         {c.actor}
                       </span>
-                      <span className="text-xs font-mono text-slate-400 flex items-center gap-1">
+                      <span className="text-xs font-mono text-muted-foreground flex items-center gap-1">
                         <Calendar className="w-3.5 h-3.5" />
                         {c.year}
                       </span>
-                      <span className="text-xs text-slate-400 flex items-center gap-1">
+                      <span className="text-xs text-muted-foreground flex items-center gap-1">
                         <Building className="w-3.5 h-3.5" />
                         {c.targetSector}
                       </span>
                     </div>
 
-                    <h3 className="text-lg font-bold text-slate-100 group-hover:text-cyan-300 transition-colors">
+                    <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">
                       {c.title}
                     </h3>
 
-                    <p className="text-xs text-slate-300 leading-relaxed">
+                    <p className="text-xs text-foreground/80 leading-relaxed">
                       {c.summary}
                     </p>
 
-                    <div className="flex flex-wrap items-center gap-3 pt-2 text-xs font-mono text-slate-400">
-                      <div className="flex items-center gap-1 text-slate-300">
-                        <Crosshair className="w-3.5 h-3.5 text-rose-400" />
-                        <span>Vector:</span>
-                        <span className="text-slate-400">{c.attackVector}</span>
+                    <div className="flex flex-wrap items-center gap-3 pt-2 text-xs font-mono text-muted-foreground">
+                      <div className="flex items-center gap-1 text-foreground">
+                        <Crosshair className="w-3.5 h-3.5 text-rose-500" />
+                        <span className="text-muted-foreground">Vector:</span>
+                        <span>{c.attackVector}</span>
                       </div>
-                      <div className="flex items-center gap-1 text-slate-300">
-                        <Layers className="w-3.5 h-3.5 text-cyan-400" />
+                      <div className="flex items-center gap-1 text-foreground">
+                        <Layers className="w-3.5 h-3.5 text-cyan-500" />
                         <span>{c.nodes.length} Graph Nodes</span>
                       </div>
                     </div>
@@ -115,12 +113,12 @@ export function CampaignLibraryModal() {
 
                   <div className="flex items-center gap-2 shrink-0 self-end md:self-center">
                     {isSelected ? (
-                      <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyan-950 border border-cyan-800 text-cyan-300 text-xs font-semibold">
+                      <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary/20 border border-primary/40 text-primary text-xs font-semibold">
                         <Check className="w-3.5 h-3.5" />
                         <span>Active Campaign</span>
                       </div>
                     ) : (
-                      <div className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-800 group-hover:bg-cyan-600 text-slate-300 group-hover:text-white text-xs font-medium transition-colors">
+                      <div className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-secondary group-hover:bg-primary group-hover:text-primary-foreground text-foreground text-xs font-medium transition-colors border border-border">
                         <span>Load Atlas</span>
                         <ArrowRight className="w-3.5 h-3.5 ml-1" />
                       </div>

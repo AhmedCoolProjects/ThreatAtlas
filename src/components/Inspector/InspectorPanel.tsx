@@ -37,7 +37,7 @@ function getEntityIcon(type: EntityType) {
     case "host":
       return <Server className="w-4 h-4 text-indigo-500" />;
     default:
-      return <Binary className="w-4 h-4 text-slate-500" />;
+      return <Binary className="w-4 h-4 text-muted-foreground" />;
   }
 }
 
@@ -49,9 +49,7 @@ export function InspectorPanel() {
   const perspective = useAtlasStore((state) => state.perspective);
   const inspectorTab = useAtlasStore((state) => state.inspectorTab);
   const setInspectorTab = useAtlasStore((state) => state.setInspectorTab);
-  const theme = useAtlasStore((state) => state.theme);
 
-  const isLight = theme === "light";
   const isRed = perspective === "red";
 
   if (!isInspectorOpen) return null;
@@ -61,62 +59,30 @@ export function InspectorPanel() {
   // Empty state if nothing selected
   if (!node) {
     return (
-      <aside
-        className={`w-full lg:w-[420px] h-full border-l flex flex-col z-20 backdrop-blur-md select-none transition-colors ${
-          isLight
-            ? "bg-slate-50 border-slate-200 text-slate-900"
-            : "bg-slate-950/95 border-slate-800/90 text-slate-100"
-        }`}
-      >
-        <div
-          className={`flex items-center justify-between p-4 border-b ${
-            isLight ? "bg-white border-slate-200" : "border-slate-800/80"
-          }`}
-        >
+      <aside className="w-full lg:w-[420px] h-full border-l border-border bg-card text-card-foreground flex flex-col z-20 select-none transition-colors">
+        <div className="flex items-center justify-between p-4 border-b border-border bg-card">
           <div className="flex items-center gap-2">
-            <Info className="w-4 h-4 text-slate-400" />
-            <h3
-              className={`text-sm font-bold ${
-                isLight ? "text-slate-800" : "text-slate-200"
-              }`}
-            >
+            <Info className="w-4 h-4 text-muted-foreground" />
+            <h3 className="text-sm font-bold text-foreground">
               Entity Inspector
             </h3>
           </div>
           <button
             onClick={() => setInspectorOpen(false)}
-            className={`p-1 rounded-md transition-colors ${
-              isLight
-                ? "hover:bg-slate-200 text-slate-500 hover:text-slate-800"
-                : "hover:bg-slate-800 text-slate-400 hover:text-slate-200"
-            }`}
+            className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
-          <div
-            className={`w-12 h-12 rounded-2xl border flex items-center justify-center mb-3 ${
-              isLight
-                ? "bg-white border-slate-200 shadow-sm"
-                : "bg-slate-900 border-slate-800"
-            }`}
-          >
-            <Layers className="w-6 h-6 text-slate-400" />
+        <div className="flex-1 flex flex-col items-center justify-center p-8 text-center bg-card">
+          <div className="w-12 h-12 rounded-2xl border border-border bg-secondary flex items-center justify-center mb-3">
+            <Layers className="w-6 h-6 text-muted-foreground" />
           </div>
-          <p
-            className={`text-sm font-bold ${
-              isLight ? "text-slate-800" : "text-slate-300"
-            }`}
-          >
+          <p className="text-sm font-bold text-foreground">
             No Entity Selected
           </p>
-          <p
-            className={`text-xs mt-1 max-w-xs ${
-              isLight ? "text-slate-500" : "text-slate-500"
-            }`}
-          >
+          <p className="text-xs mt-1 max-w-xs text-muted-foreground">
             Click any node in the causal graph to inspect execution mechanics, raw Sysmon logs, and Sigma detection rules.
           </p>
         </div>
@@ -127,41 +93,17 @@ export function InspectorPanel() {
   const { data } = node;
 
   return (
-    <aside
-      className={`w-full lg:w-[460px] h-full border-l flex flex-col z-20 backdrop-blur-md overflow-hidden select-text transition-colors ${
-        isLight
-          ? "bg-slate-50 border-slate-200 text-slate-900 shadow-xl"
-          : "bg-slate-950/95 border-slate-800/90 text-slate-100"
-      }`}
-    >
+    <aside className="w-full lg:w-[460px] h-full border-l border-border bg-card text-card-foreground flex flex-col z-20 overflow-hidden select-text transition-colors shadow-xl">
       {/* Header */}
-      <div
-        className={`p-4 border-b ${
-          isLight
-            ? "bg-white border-slate-200 shadow-sm"
-            : "bg-slate-900/40 border-slate-800/80"
-        }`}
-      >
+      <div className="p-4 border-b border-border bg-card">
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-2.5 min-w-0">
-            <div
-              className={`p-2 rounded-xl border shrink-0 ${
-                isLight
-                  ? "bg-slate-50 border-slate-200 shadow-inner"
-                  : "bg-slate-900 border-slate-800"
-              }`}
-            >
+            <div className="p-2 rounded-xl border border-border bg-secondary shadow-inner shrink-0">
               {getEntityIcon(data.entityType)}
             </div>
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2">
-                <span
-                  className={`text-[10px] font-mono uppercase font-bold tracking-wider px-1.5 py-0.2 rounded border ${
-                    isLight
-                      ? "bg-slate-100 text-slate-700 border-slate-200"
-                      : "bg-slate-900 text-slate-400 border-slate-800"
-                  }`}
-                >
+                <span className="text-[10px] font-mono uppercase font-bold tracking-wider px-1.5 py-0.2 rounded border border-border bg-muted text-muted-foreground">
                   {data.entityType}
                 </span>
                 {data.techniqueId && (
@@ -169,11 +111,7 @@ export function InspectorPanel() {
                     href={`https://attack.mitre.org/techniques/${data.techniqueId.replace(".", "/")}`}
                     target="_blank"
                     rel="noreferrer"
-                    className={`flex items-center gap-1 text-[10px] font-mono font-semibold px-1.5 py-0.2 rounded border transition-colors ${
-                      isLight
-                        ? "bg-cyan-50 border-cyan-200 text-cyan-800 hover:bg-cyan-100"
-                        : "bg-cyan-950/70 border-cyan-800 text-cyan-300 hover:bg-cyan-900"
-                    }`}
+                    className="flex items-center gap-1 text-[10px] font-mono font-semibold px-1.5 py-0.2 rounded border border-cyan-300 dark:border-cyan-800 bg-cyan-500/15 text-cyan-700 dark:text-cyan-300 hover:opacity-80 transition-colors"
                     title="View technique on MITRE ATT&CK"
                   >
                     <span>{data.techniqueId}</span>
@@ -181,19 +119,11 @@ export function InspectorPanel() {
                   </a>
                 )}
               </div>
-              <h3
-                className={`text-base font-bold mt-1 leading-snug break-words ${
-                  isLight ? "text-slate-900" : "text-slate-100"
-                }`}
-              >
+              <h3 className="text-base font-bold mt-1 leading-snug break-words text-foreground">
                 {data.label}
               </h3>
               {data.subLabel && (
-                <p
-                  className={`text-xs font-mono mt-0.5 break-words ${
-                    isLight ? "text-slate-500" : "text-slate-400"
-                  }`}
-                >
+                <p className="text-xs font-mono mt-0.5 break-words text-muted-foreground">
                   {data.subLabel}
                 </p>
               )}
@@ -202,34 +132,20 @@ export function InspectorPanel() {
 
           <button
             onClick={() => setInspectorOpen(false)}
-            className={`p-1.5 rounded-lg transition-colors shrink-0 ${
-              isLight
-                ? "hover:bg-slate-100 text-slate-500 hover:text-slate-900"
-                : "hover:bg-slate-800 text-slate-400 hover:text-slate-200"
-            }`}
+            className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors shrink-0"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Tab navigation */}
-        <div
-          className={`grid grid-cols-3 gap-1 mt-4 p-1 rounded-xl border select-none ${
-            isLight
-              ? "bg-slate-100 border-slate-200"
-              : "bg-slate-900/80 border-slate-800"
-          }`}
-        >
+        <div className="grid grid-cols-3 gap-1 mt-4 p-1 rounded-xl border border-border bg-secondary/70 select-none">
           <button
             onClick={() => setInspectorTab("anatomy")}
             className={`flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
               inspectorTab === "anatomy"
-                ? isLight
-                  ? "bg-white text-slate-900 shadow-sm border border-slate-200"
-                  : "bg-slate-800 text-white shadow-sm border border-slate-700"
-                : isLight
-                ? "text-slate-600 hover:text-slate-900"
-                : "text-slate-400 hover:text-slate-200"
+                ? "bg-card text-foreground shadow-sm border border-border"
+                : "text-muted-foreground hover:text-foreground"
             }`}
           >
             <Flame className="w-3.5 h-3.5 text-rose-500" />
@@ -240,12 +156,8 @@ export function InspectorPanel() {
             onClick={() => setInspectorTab("telemetry")}
             className={`flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
               inspectorTab === "telemetry"
-                ? isLight
-                  ? "bg-white text-slate-900 shadow-sm border border-slate-200"
-                  : "bg-slate-800 text-white shadow-sm border border-slate-700"
-                : isLight
-                ? "text-slate-600 hover:text-slate-900"
-                : "text-slate-400 hover:text-slate-200"
+                ? "bg-card text-foreground shadow-sm border border-border"
+                : "text-muted-foreground hover:text-foreground"
             }`}
           >
             <Terminal className="w-3.5 h-3.5 text-cyan-500" />
@@ -256,12 +168,8 @@ export function InspectorPanel() {
             onClick={() => setInspectorTab("rules")}
             className={`flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
               inspectorTab === "rules"
-                ? isLight
-                  ? "bg-white text-slate-900 shadow-sm border border-slate-200"
-                  : "bg-slate-800 text-white shadow-sm border border-slate-700"
-                : isLight
-                ? "text-slate-600 hover:text-slate-900"
-                : "text-slate-400 hover:text-slate-200"
+                ? "bg-card text-foreground shadow-sm border border-border"
+                : "text-muted-foreground hover:text-foreground"
             }`}
           >
             <Shield className="w-3.5 h-3.5 text-emerald-500" />
@@ -271,30 +179,16 @@ export function InspectorPanel() {
       </div>
 
       {/* Content Scroll Area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin bg-card">
         {/* TAB 1: ANATOMY & ATTACK MECHANICS */}
         {inspectorTab === "anatomy" && (
           <div className="space-y-4 animate-in fade-in-50 duration-200">
             {/* Summary card */}
-            <div
-              className={`p-3.5 rounded-xl border ${
-                isLight
-                  ? "bg-white border-slate-200 shadow-sm"
-                  : "bg-slate-900/60 border-slate-800/80"
-              }`}
-            >
-              <h4
-                className={`text-xs font-bold uppercase tracking-wider font-mono mb-1.5 ${
-                  isLight ? "text-slate-700" : "text-slate-300"
-                }`}
-              >
+            <div className="p-3.5 rounded-xl border border-border bg-card shadow-sm">
+              <h4 className="text-xs font-bold uppercase tracking-wider font-mono mb-1.5 text-foreground">
                 Technical Anatomy
               </h4>
-              <p
-                className={`text-xs leading-relaxed ${
-                  isLight ? "text-slate-700" : "text-slate-300"
-                }`}
-              >
+              <p className="text-xs leading-relaxed text-foreground/80">
                 {data.redDetails.summary}
               </p>
             </div>
@@ -302,46 +196,22 @@ export function InspectorPanel() {
             {/* Parent-child & tool metadata */}
             <div className="grid grid-cols-2 gap-2 text-xs">
               {data.redDetails.toolOrMalware && (
-                <div
-                  className={`p-2.5 rounded-lg border ${
-                    isLight
-                      ? "bg-white border-slate-200 shadow-sm"
-                      : "bg-slate-900/50 border-slate-800/80"
-                  }`}
-                >
-                  <span
-                    className={`text-[10px] font-mono uppercase block ${
-                      isLight ? "text-slate-500" : "text-slate-400"
-                    }`}
-                  >
+                <div className="p-2.5 rounded-lg border border-border bg-card shadow-sm">
+                  <span className="text-[10px] font-mono uppercase block text-muted-foreground">
                     Tool / Malware
                   </span>
-                  <span className="font-bold text-rose-600 dark:text-rose-300 break-words leading-tight block mt-1">
+                  <span className="font-bold text-rose-600 dark:text-rose-400 break-words leading-tight block mt-1">
                     {data.redDetails.toolOrMalware}
                   </span>
                 </div>
               )}
 
               {data.redDetails.parentProcess && (
-                <div
-                  className={`p-2.5 rounded-lg border ${
-                    isLight
-                      ? "bg-white border-slate-200 shadow-sm"
-                      : "bg-slate-900/50 border-slate-800/80"
-                  }`}
-                >
-                  <span
-                    className={`text-[10px] font-mono uppercase block ${
-                      isLight ? "text-slate-500" : "text-slate-400"
-                    }`}
-                  >
+                <div className="p-2.5 rounded-lg border border-border bg-card shadow-sm">
+                  <span className="text-[10px] font-mono uppercase block text-muted-foreground">
                     Parent Process
                   </span>
-                  <span
-                    className={`font-mono break-words leading-tight block mt-1 ${
-                      isLight ? "text-slate-800" : "text-slate-200"
-                    }`}
-                  >
+                  <span className="font-mono break-words leading-tight block mt-1 text-foreground">
                     {data.redDetails.parentProcess}
                   </span>
                 </div>
@@ -351,11 +221,7 @@ export function InspectorPanel() {
             {/* Command Line Box */}
             {data.redDetails.commandLine && (
               <div>
-                <span
-                  className={`text-xs font-bold uppercase tracking-wider font-mono block mb-1.5 ${
-                    isLight ? "text-slate-700" : "text-slate-300"
-                  }`}
-                >
+                <span className="text-xs font-bold uppercase tracking-wider font-mono block mb-1.5 text-foreground">
                   Execution Payload / Command Line
                 </span>
                 <CodeBlock
@@ -369,30 +235,16 @@ export function InspectorPanel() {
 
             {/* Attack Mechanics Steps */}
             <div>
-              <span
-                className={`text-xs font-bold uppercase tracking-wider font-mono block mb-2 ${
-                  isLight ? "text-slate-700" : "text-slate-300"
-                }`}
-              >
+              <span className="text-xs font-bold uppercase tracking-wider font-mono block mb-2 text-foreground">
                 Execution Mechanics Breakdown
               </span>
               <ul className="space-y-2">
                 {data.redDetails.mechanics.map((step, idx) => (
                   <li
                     key={idx}
-                    className={`flex items-start gap-2.5 p-2.5 rounded-lg border text-xs ${
-                      isLight
-                        ? "bg-white border-slate-200 text-slate-700 shadow-sm"
-                        : "bg-slate-900/40 border-slate-800/60 text-slate-300"
-                    }`}
+                    className="flex items-start gap-2.5 p-2.5 rounded-lg border border-border bg-card text-xs text-foreground/90 shadow-sm"
                   >
-                    <div
-                      className={`w-5 h-5 rounded-md font-mono text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5 border ${
-                        isLight
-                          ? "bg-rose-100 border-rose-200 text-rose-700"
-                          : "bg-rose-950/70 border-rose-800/60 text-rose-300"
-                      }`}
-                    >
+                    <div className="w-5 h-5 rounded-md font-mono text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5 border border-rose-300 dark:border-rose-800 bg-rose-500/15 text-rose-700 dark:text-rose-300">
                       {idx + 1}
                     </div>
                     <span className="leading-relaxed">{step}</span>
@@ -407,36 +259,18 @@ export function InspectorPanel() {
         {inspectorTab === "telemetry" && (
           <div className="space-y-4 animate-in fade-in-50 duration-200">
             {/* Telemetry overview */}
-            <div
-              className={`p-3.5 rounded-xl border ${
-                isLight
-                  ? "bg-white border-slate-200 shadow-sm"
-                  : "bg-slate-900/60 border-slate-800/80"
-              }`}
-            >
-              <h4
-                className={`text-xs font-bold uppercase tracking-wider font-mono mb-1.5 ${
-                  isLight ? "text-slate-700" : "text-slate-300"
-                }`}
-              >
+            <div className="p-3.5 rounded-xl border border-border bg-card shadow-sm">
+              <h4 className="text-xs font-bold uppercase tracking-wider font-mono mb-1.5 text-foreground">
                 Blue Team Telemetry Footprint
               </h4>
-              <p
-                className={`text-xs leading-relaxed ${
-                  isLight ? "text-slate-700" : "text-slate-300"
-                }`}
-              >
+              <p className="text-xs leading-relaxed text-foreground/80">
                 {data.blueDetails.summary}
               </p>
             </div>
 
             {/* Telemetry Artifacts */}
             <div>
-              <span
-                className={`text-xs font-bold uppercase tracking-wider font-mono block mb-2 ${
-                  isLight ? "text-slate-700" : "text-slate-300"
-                }`}
-              >
+              <span className="text-xs font-bold uppercase tracking-wider font-mono block mb-2 text-foreground">
                 Authentic Raw Telemetry Samples
               </span>
 
@@ -444,33 +278,17 @@ export function InspectorPanel() {
                 <div key={idx} className="mb-4">
                   <div className="flex items-center justify-between mb-1">
                     <div className="flex items-center gap-2">
-                      <span
-                        className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold border ${
-                          isLight
-                            ? "bg-cyan-100 text-cyan-800 border-cyan-200"
-                            : "bg-cyan-950 text-cyan-300 border border-cyan-800"
-                        }`}
-                      >
+                      <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold border border-cyan-300 dark:border-cyan-800 bg-cyan-500/15 text-cyan-700 dark:text-cyan-300">
                         {art.source}
                       </span>
                       {art.eventId && (
-                        <span
-                          className={`px-1.5 py-0.5 rounded text-[10px] font-mono border ${
-                            isLight
-                              ? "bg-slate-100 text-slate-700 border-slate-200"
-                              : "bg-slate-800 text-slate-300 border-slate-700"
-                          }`}
-                        >
+                        <span className="px-1.5 py-0.5 rounded text-[10px] font-mono border border-border bg-muted text-muted-foreground">
                           EventID {art.eventId}
                         </span>
                       )}
                     </div>
                   </div>
-                  <p
-                    className={`text-xs mb-1.5 ${
-                      isLight ? "text-slate-600" : "text-slate-400"
-                    }`}
-                  >
+                  <p className="text-xs mb-1.5 text-muted-foreground">
                     {art.description}
                   </p>
                   <CodeBlock
@@ -485,20 +303,10 @@ export function InspectorPanel() {
 
             {/* Detection Pitfalls & Blind Spots */}
             {data.blueDetails.detectionPitfalls.length > 0 && (
-              <div
-                className={`p-3.5 rounded-xl border ${
-                  isLight
-                    ? "bg-amber-50 border-amber-200"
-                    : "bg-amber-950/30 border-amber-800/50"
-                }`}
-              >
+              <div className="p-3.5 rounded-xl border border-amber-300 dark:border-amber-800/60 bg-amber-500/10">
                 <div className="flex items-center gap-2 mb-2">
                   <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
-                  <h4
-                    className={`text-xs font-bold uppercase font-mono tracking-wider ${
-                      isLight ? "text-amber-800" : "text-amber-300"
-                    }`}
-                  >
+                  <h4 className="text-xs font-bold uppercase font-mono tracking-wider text-amber-800 dark:text-amber-300">
                     Detection Blind Spots & Pitfalls
                   </h4>
                 </div>
@@ -506,9 +314,7 @@ export function InspectorPanel() {
                   {data.blueDetails.detectionPitfalls.map((pitfall, idx) => (
                     <li
                       key={idx}
-                      className={`text-xs leading-relaxed list-disc list-inside ${
-                        isLight ? "text-amber-900" : "text-amber-200/90"
-                      }`}
+                      className="text-xs leading-relaxed list-disc list-inside text-amber-900 dark:text-amber-200/90"
                     >
                       {pitfall}
                     </li>
@@ -524,11 +330,7 @@ export function InspectorPanel() {
           <div className="space-y-4 animate-in fade-in-50 duration-200">
             {/* Rules list */}
             <div>
-              <span
-                className={`text-xs font-bold uppercase tracking-wider font-mono block mb-2 ${
-                  isLight ? "text-slate-700" : "text-slate-300"
-                }`}
-              >
+              <span className="text-xs font-bold uppercase tracking-wider font-mono block mb-2 text-foreground">
                 Production Detection Rules ({data.blueDetails.rules.length})
               </span>
 
@@ -536,29 +338,17 @@ export function InspectorPanel() {
                 <div key={idx} className="mb-4">
                   <div className="flex items-center justify-between gap-2 mb-1.5">
                     <div className="flex items-center gap-2">
-                      <span
-                        className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold border ${
-                          isLight
-                            ? "bg-emerald-100 text-emerald-800 border-emerald-200"
-                            : "bg-emerald-950 text-emerald-300 border-emerald-800"
-                        }`}
-                      >
+                      <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold border border-emerald-300 dark:border-emerald-800 bg-emerald-500/15 text-emerald-700 dark:text-emerald-300">
                         {rule.format}
                       </span>
                       {rule.severity && (
                         <span
-                          className={`px-1.5 py-0.5 rounded text-[10px] font-mono uppercase font-semibold ${
+                          className={`px-1.5 py-0.5 rounded text-[10px] font-mono uppercase font-semibold border ${
                             rule.severity === "critical"
-                              ? isLight
-                                ? "bg-rose-100 text-rose-800 border border-rose-200"
-                                : "bg-rose-950 text-rose-300 border border-rose-800"
+                              ? "bg-rose-500/15 text-rose-700 dark:text-rose-300 border-rose-300 dark:border-rose-800"
                               : rule.severity === "high"
-                              ? isLight
-                                ? "bg-amber-100 text-amber-800 border border-amber-200"
-                                : "bg-amber-950 text-amber-300 border border-amber-800"
-                              : isLight
-                              ? "bg-blue-100 text-blue-800 border border-blue-200"
-                              : "bg-blue-950 text-blue-300 border border-blue-800"
+                              ? "bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-300 dark:border-amber-800"
+                              : "bg-blue-500/15 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-800"
                           }`}
                         >
                           {rule.severity}
@@ -567,11 +357,7 @@ export function InspectorPanel() {
                     </div>
                   </div>
 
-                  <h4
-                    className={`text-xs font-bold mb-1 ${
-                      isLight ? "text-slate-900" : "text-slate-200"
-                    }`}
-                  >
+                  <h4 className="text-xs font-bold mb-1 text-foreground">
                     {rule.title}
                   </h4>
 
@@ -586,28 +372,14 @@ export function InspectorPanel() {
             </div>
 
             {/* Defense In Depth Checklist */}
-            <div
-              className={`p-3.5 rounded-xl border ${
-                isLight
-                  ? "bg-white border-slate-200 shadow-sm"
-                  : "bg-slate-900/60 border-slate-800/80"
-              }`}
-            >
+            <div className="p-3.5 rounded-xl border border-border bg-card shadow-sm">
               <div className="flex items-center gap-2 mb-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                <h4
-                  className={`text-xs font-bold uppercase font-mono tracking-wider ${
-                    isLight ? "text-slate-800" : "text-slate-200"
-                  }`}
-                >
+                <h4 className="text-xs font-bold uppercase font-mono tracking-wider text-foreground">
                   Detection Engineering Advice
                 </h4>
               </div>
-              <ul
-                className={`space-y-1.5 text-xs ${
-                  isLight ? "text-slate-700" : "text-slate-300"
-                }`}
-              >
+              <ul className="space-y-1.5 text-xs text-foreground/80">
                 <li className="flex items-start gap-2">
                   <span className="text-emerald-500 font-bold">&bull;</span>
                   <span>Deploy Sysmon with SwiftOnSecurity or Modular configuration.</span>

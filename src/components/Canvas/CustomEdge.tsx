@@ -9,6 +9,7 @@ import {
 } from "@xyflow/react";
 import { AtlasEdge } from "@/types/campaign";
 import { useAtlasStore } from "@/store/useAtlasStore";
+import { useTheme } from "next-themes";
 
 export const CustomEdge = memo(
   ({
@@ -25,9 +26,9 @@ export const CustomEdge = memo(
     const activeStage = useAtlasStore((state) => state.activeStage);
     const perspective = useAtlasStore((state) => state.perspective);
     const selectEdge = useAtlasStore((state) => state.selectEdge);
-    const theme = useAtlasStore((state) => state.theme);
+    const { resolvedTheme } = useTheme();
 
-    const isLight = theme === "light";
+    const isLight = resolvedTheme === "light";
     const isRed = perspective === "red";
     const isActive = !data?.stage || data.stage === activeStage;
 
@@ -90,23 +91,13 @@ export const CustomEdge = memo(
               className={`px-2.5 py-1 rounded-full text-[10.5px] font-mono font-semibold transition-all duration-200 cursor-pointer border select-none ${
                 selected
                   ? isRed
-                    ? isLight
-                      ? "bg-rose-50 border-rose-400 text-rose-800 shadow-md"
-                      : "bg-rose-950 border-rose-500 text-rose-200 shadow-[0_0_12px_rgba(244,63,94,0.4)]"
-                    : isLight
-                    ? "bg-cyan-50 border-cyan-400 text-cyan-800 shadow-md"
-                    : "bg-cyan-950 border-cyan-400 text-cyan-200 shadow-[0_0_12px_rgba(34,211,238,0.4)]"
+                    ? "bg-rose-500/15 border-rose-400 text-rose-700 dark:text-rose-200 shadow-md"
+                    : "bg-cyan-500/15 border-cyan-400 text-cyan-700 dark:text-cyan-200 shadow-md"
                   : isActive
                   ? isRed
-                    ? isLight
-                      ? "bg-white/95 border-rose-300 text-rose-700 shadow-sm hover:border-rose-400"
-                      : "bg-slate-950/95 border-rose-900/80 text-rose-300 hover:border-rose-500 shadow-md"
-                    : isLight
-                    ? "bg-white/95 border-cyan-300 text-cyan-700 shadow-sm hover:border-cyan-400"
-                    : "bg-slate-950/95 border-cyan-900/80 text-cyan-300 hover:border-cyan-400 shadow-md"
-                  : isLight
-                  ? "bg-white/80 border-slate-200 text-slate-400 opacity-50"
-                  : "bg-slate-950/60 border-slate-800 text-slate-500 opacity-40"
+                    ? "bg-card/95 border-rose-300 dark:border-rose-900/80 text-rose-700 dark:text-rose-300 shadow-sm hover:border-rose-400"
+                    : "bg-card/95 border-cyan-300 dark:border-cyan-900/80 text-cyan-700 dark:text-cyan-300 shadow-sm hover:border-cyan-400"
+                  : "bg-card/80 border-border text-muted-foreground opacity-50"
               }`}
             >
               <span>{data.label}</span>
